@@ -1,34 +1,41 @@
 <?php
-class Model_administrator extends CI_Model {
-	
-	public function cek ($username){
+class Model_administrator extends CI_Model
+{
+
+	public function cek($username)
+	{
 		$this->db->select('*');
-		$this->db->where("user",$username);
+		$this->db->where("email", $username);
 		// $this->db->where("password",$password);
 		return $this->db->get("administrator");
 	}
 
 
-	public function semua(){
+	public function semua()
+	{
 		return $this->db->get('administrator');
 	}
 
-	public function cekKode($kode){
-		$this->db->where('user',$kode);
+	public function cekKode($kode)
+	{
+		$this->db->where('user', $kode);
 		return $this->db->get('administrator');
 	}
 
-	public function cekId($kode){
+	public function cekId($kode)
+	{
 		$this->db->where('id_admin', $kode);
 		return $this->db->get("administrator");
 	}
 
-	public function cekUser($kode){
+	public function cekUser($kode)
+	{
 		$this->db->where('user', $kode);
 		return $this->db->get("administrator");
 	}
 
-	public function update($password){
+	public function update($password)
+	{
 		if (empty($password)) {
 			$data = array(
 				'user' => $this->input->post('username'),
@@ -44,18 +51,18 @@ class Model_administrator extends CI_Model {
 			);
 		}
 		$id = $this->input->post('id_admin');
-		$this->db->where("id_admin",$id);
-		$this->db->update("administrator",$data);
-    }
+		$this->db->where("id_admin", $id);
+		$this->db->update("administrator", $data);
+	}
 
-    public function simpan($info){
-    	$this->db->insert("administrator",$info);
-    }
+	public function simpan($info)
+	{
+		$this->db->insert("administrator", $info);
+	}
 
-    public function hapus($kode){
-    	$this->db->where('id_admin',$kode);
-    	$this->db->delete("administrator");
-    }
-
-
+	public function hapus($kode)
+	{
+		$this->db->where('id_admin', $kode);
+		$this->db->delete("administrator");
+	}
 }

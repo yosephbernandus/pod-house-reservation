@@ -1,7 +1,9 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Auth extends Admin_Controller {
-	function __construct(){
+class Auth extends Admin_Controller
+{
+	function __construct()
+	{
 		parent::__construct();
 		if ($this->session->userdata('username')) {
 			redirect('reservasi');
@@ -9,7 +11,8 @@ class Auth extends Admin_Controller {
 		$this->load->model('model_administrator');
 	}
 
-	public function logout(){
+	public function logout()
+	{
 		$arr_sess = array(
 			'id' => $this->session->userdata('id'),
 			'username' => $this->session->userdata('username'),
@@ -17,13 +20,14 @@ class Auth extends Admin_Controller {
 			'level' => $this->session->userdata('level'),
 			'email' => $this->session->userdata('email')
 		);
-        // $this->session->unset_userdata($arr_sess);
-        $this->session->sess_destroy();
-        redirect('auth');
-    }
-// Array ( [__ci_last_regenerate] => 1542773590 [id] => 1 [username] => admin [password] => admin.2017 [level] => admin [email] => admin@email.com )
+		// $this->session->unset_userdata($arr_sess);
+		$this->session->sess_destroy();
+		redirect('auth');
+	}
+	// Array ( [__ci_last_regenerate] => 1542773590 [id] => 1 [username] => admin [password] => admin.2017 [level] => admin [email] => admin@email.com )
 
-	public function index(){
+	public function index()
+	{
 		redirect('auth/login');
 	}
 
@@ -31,13 +35,11 @@ class Auth extends Admin_Controller {
 	{
 		$user_id = $this->session->userdata('user_id');
 
-		if(!empty($user_id))
-		{
+		if (!empty($user_id)) {
 			redirect();
 		}
-		
-		if($error != '0')
-		{
+
+		if ($error != '0') {
 			$data['error'] = $error;
 		}
 
@@ -46,7 +48,8 @@ class Auth extends Admin_Controller {
 		$this->load->view('login', $data);
 	}
 
-	public function submit(){
+	public function submit()
+	{
 		$json = array();
 		$json['success'] = TRUE;
 		$json['message'] = '';
@@ -66,8 +69,7 @@ class Auth extends Admin_Controller {
 
 			unset($json['redirect']);
 
-			if ($json['message'] == '')
-			{
+			if ($json['message'] == '') {
 				$json['message'] = 'Server error.';
 			}
 		}
@@ -77,18 +79,19 @@ class Auth extends Admin_Controller {
 		echo json_encode($json);
 	}
 
-	private function _submit(){
+	private function _submit()
+	{
 
 		$id = $this->input->post('id_admin');
-		$username=$this->input->post('username');
-		$password=$this->input->post('password');
+		$username = $this->input->post('username');
+		$password = $this->input->post('password');
 
 		if (empty($username) && empty($password)) {
 			throw new Exception("Username or password cannot be empty.");
 		}
 
-		$cek=$this->model_administrator->cek($username);
-		if ($cek->num_rows()>0) {
+		$cek = $this->model_administrator->cek($username);
+		if ($cek->num_rows() > 0) {
 			$hash = $this->model_administrator->cek($username)->result();
 			foreach ($hash as $row) {
 				if (password_verify($password, $row->password)) {
