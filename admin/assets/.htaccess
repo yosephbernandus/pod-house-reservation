@@ -1,0 +1,3 @@
+Options -Indexes 
+ErrorDocument 403 http://dev.karyampat.net/manadopodhouse/error/
+
